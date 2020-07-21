@@ -21,21 +21,25 @@ class RecordingViewModel @Inject constructor(
     fun startRecordingVoice() {
         val myFile = File(Environment.getExternalStorageDirectory().absolutePath, "effects1.pcm")
         myFile.createNewFile()
-
-
         val outPutStream = FileOutputStream(myFile)
         val bufferedOutPutStream = BufferedOutputStream(outPutStream)
         dataOutputStream = DataOutputStream(bufferedOutPutStream)
         val minBufferSize = AudioRecord.getMinBufferSize(11025, 2, 2)
-        val audioData: ShortArray = ShortArray(minBufferSize)
+        val audioData = ShortArray(minBufferSize)
         audioRecord = AudioRecord(1, 11025, 2, 2, minBufferSize)
 
         audioRecord.startRecording()
 
-        val numberOfShorts = audioRecord.read(audioData, 0, minBufferSize)
+        while (isRecording) {
+            val numberOfShorts = audioRecord.read(audioData, 0, minBufferSize)
 
-        for (i in 0 until numberOfShorts) {
-            dataOutputStream.writeShort(audioData[i].toInt())
+            for (i in 0 until numberOfShorts) {
+                dataOutputStream.writeShort(audioData[i].toInt())
+            }
+        }
+
+        if (!isRecording){
+            stopRecording()
         }
 
     }

@@ -52,9 +52,9 @@ class RecordingDialogFragment : DialogFragment(), Animation.AnimationListener {
 
     private fun initView() {
         recording = true
-        viewModel.startRecordingVoice()
+        viewModel.trueRecordFlag()
         Thread(Runnable {
-            viewModel.trueRecordFlag()
+            viewModel.startRecordingVoice()
         }).start()
 
         animRotate = AnimationUtils.loadAnimation(requireContext(), R.anim.zoom_out)
