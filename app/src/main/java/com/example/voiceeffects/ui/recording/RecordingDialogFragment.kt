@@ -11,15 +11,13 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.voiceeffects.R
 import com.example.voiceeffects.di.DaggerViewModelFactory
+import com.example.voiceeffects.ui.base.BaseDialogFragment
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.recording_dialog_fragment.*
 import javax.inject.Inject
 
-class RecordingDialogFragment : DialogFragment(), Animation.AnimationListener {
+class RecordingDialogFragment : BaseDialogFragment(), Animation.AnimationListener {
     private lateinit var animRotate: Animation
-
-    @Inject
-    lateinit var viewModelFactory: DaggerViewModelFactory
 
     private val viewModel: RecordingViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(RecordingViewModel::class.java)
@@ -46,7 +44,6 @@ class RecordingDialogFragment : DialogFragment(), Animation.AnimationListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndroidSupportInjection.inject(this)
 
     }
 

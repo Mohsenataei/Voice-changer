@@ -5,13 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.voiceeffects.NavGraphDirections
 import com.example.voiceeffects.R
-import com.example.voiceeffects.base.BaseFragment
+import com.example.voiceeffects.ui.base.BaseFragment
 import com.example.voiceeffects.ui.recording.RecordingDialogFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
