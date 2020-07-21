@@ -62,7 +62,7 @@ class RecordingDialogFragment : DialogFragment(), Animation.AnimationListener {
         imageView.visibility = View.INVISIBLE
         imageView.startAnimation(animRotate)
         stopRec.setOnClickListener {
-            viewModel.stopRecording()
+            viewModel.falseRecordFlag()
             dismiss()
         }
 

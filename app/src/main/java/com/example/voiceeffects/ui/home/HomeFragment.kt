@@ -37,13 +37,10 @@ class HomeFragment : Fragment() {
         viewModel.arrayString.observe(viewLifecycleOwner, Observer {
             initAdapter(it)
         })
-        buttonStart.setOnClickListener {
+        startRecord.setOnClickListener {
             val dialog = RecordingDialogFragment()
             dialog.show(childFragmentManager, "")
 
-        }
-        stopRecording.setOnClickListener {
-            viewModel.stopRecording()
         }
 
         playRecord.setOnClickListener {

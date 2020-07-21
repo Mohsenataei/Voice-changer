@@ -5,6 +5,9 @@ import android.media.AudioRecord
 import android.os.Environment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.BufferedOutputStream
 import java.io.DataOutputStream
 import java.io.File
@@ -50,7 +53,9 @@ class RecordingViewModel @Inject constructor(
     }
 
     fun falseRecordFlag() {
-        isRecording = true
+        CoroutineScope(Dispatchers.Main).launch {
+            isRecording = true
+        }
     }
 
     fun stopRecording() {
