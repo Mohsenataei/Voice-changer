@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.io.BufferedOutputStream
 import java.io.DataOutputStream
@@ -22,34 +23,40 @@ class RecordingViewModel @Inject constructor(
     lateinit var audioRecord: AudioRecord
     lateinit var dataOutputStream: DataOutputStream
     fun startRecordingVoice() {
-        val myFile = File(Environment.getExternalStorageDirectory().absolutePath, "effects1.pcm")
-        myFile.createNewFile()
-        val outPutStream = FileOutputStream(myFile)
-        val bufferedOutPutStream = BufferedOutputStream(outPutStream)
-        dataOutputStream = DataOutputStream(bufferedOutPutStream)
-        val minBufferSize = AudioRecord.getMinBufferSize(11025, 2, 2)
-        val audioData = ShortArray(minBufferSize)
-        audioRecord = AudioRecord(1, 11025, 2, 2, minBufferSize)
+        CoroutineScope(Dispatchers.IO).launch {
+            val myFile =
+                File(Environment.getExternalStorageDirectory().absolutePath, "effects1.pcm")
+            myFile.createNewFile()
+            val outPutStream = FileOutputStream(myFile)
+            val bufferedOutPutStream = BufferedOutputStream(outPutStream)
+            dataOutputStream = DataOutputStream(bufferedOutPutStream)
+            val minBufferSize = AudioRecord.getMinBufferSize(11025, 2, 2)
+            val audioData = ShortArray(minBufferSize)
+            audioRecord = AudioRecord(1, 11025, 2, 2, minBufferSize)
 
-        audioRecord.startRecording()
+            audioRecord.startRecording()
 
-        while (isRecording) {
-            val numberOfShorts = audioRecord.read(audioData, 0, minBufferSize)
+            while (isRecording) {
+                val numberOfShorts = audioRecord.read(audioData, 0, minBufferSize)
 
-            for (i in 0 until numberOfShorts) {
-                dataOutputStream.writeShort(audioData[i].toInt())
+                for (i in 0 until numberOfShorts) {
+                    dataOutputStream.writeShort(audioData[i].toInt())
+                }
             }
-        }
 
-        if (!isRecording){
-            stopRecording()
+            if (!isRecording) {
+                stopRecording()
+            }
         }
 
     }
 
 
     fun trueRecordFlag() {
-        isRecording = true
+
+        CoroutineScope(Dispatchers.IO).launch {
+            isRecording = true
+        }
     }
 
     fun falseRecordFlag() {

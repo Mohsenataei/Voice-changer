@@ -50,10 +50,7 @@ class RecordingDialogFragment : BaseDialogFragment(), Animation.AnimationListene
     private fun initView() {
         recording = true
         viewModel.trueRecordFlag()
-        Thread(Runnable {
-            viewModel.startRecordingVoice()
-        }).start()
-
+        viewModel.startRecordingVoice()
         animRotate = AnimationUtils.loadAnimation(requireContext(), R.anim.zoom_out)
         animRotate.setAnimationListener(this)
         imageView.visibility = View.INVISIBLE
