@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Voice Effects</string>
+
+
+
+
+    <!-- spinner data -->
+
+    <string name="ghost">Ghost</string>
+    <string name="Slow_Motion">Slow Motion</string>
+    <string name="robot">Robot</string>
+    <string name="normal">Normal</string>
+    <string name="chipmunk">Chipmunk</string>
+    <string name="funny">Funny</string>
+    <string name="bee">Bee</string>
+    <string name="elephant">Elephant</string>
+</resources>
