@@ -39,8 +39,7 @@ class HomeFragment : BaseFragment() {
             initAdapter(it)
         })
         startRecord.setOnClickListener {
-            val dialog = RecordingDialogFragment()
-            dialog.show(childFragmentManager, "")
+            RecordingDialogFragment.newInstance().show(childFragmentManager,"")
 
         }
 

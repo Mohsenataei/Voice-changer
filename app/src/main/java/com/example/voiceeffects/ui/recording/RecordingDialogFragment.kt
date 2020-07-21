@@ -42,11 +42,6 @@ class RecordingDialogFragment : BaseDialogFragment(), Animation.AnimationListene
         initView()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     private fun initView() {
         recording = true
         viewModel.trueRecordFlag()
