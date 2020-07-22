@@ -10,7 +10,7 @@ android {
     buildToolsVersion "30.0.1"
 
     defaultConfig {
-        applicationId "com.example.voiceeffects"
+        applicationId "com.hami.voiceffects"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

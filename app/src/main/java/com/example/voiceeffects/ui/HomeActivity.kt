@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.voiceeffects.R
 import com.example.voiceeffects.di.DaggerViewModelFactory
+import com.example.voiceeffects.ui.base.BaseActivity
 import com.example.voiceeffects.ui.home.HomeViewModel
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -16,16 +17,11 @@ import dagger.android.HasAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
-class HomeActivity : DaggerAppCompatActivity(), HasAndroidInjector {
+class HomeActivity : BaseActivity() {
 
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any?>
-    override fun androidInjector(): AndroidInjector<Any?>? = androidInjector
-    @Inject
-    lateinit var viewModelFactory: DaggerViewModelFactory
     private val viewmodel by lazy { ViewModelProviders.of(this, viewModelFactory).get(
         HomeViewModel::class.java) }
-    lateinit var navController: NavController
+    private lateinit var navController: NavController
     private final val REQUEST_STORAGE_PERMISSIONS = 786
     private var fileAccessGranted = false
 

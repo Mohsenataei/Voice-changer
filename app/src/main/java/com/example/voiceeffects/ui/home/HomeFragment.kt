@@ -35,12 +35,11 @@ class HomeFragment : BaseFragment() {
 
     private fun initView() {
 
-        viewModel.arrayString.observe(viewLifecycleOwner, Observer {
+        viewModel.filters.observe(viewLifecycleOwner, Observer {
             initAdapter(it)
         })
         startRecord.setOnClickListener {
             RecordingDialogFragment.newInstance().show(childFragmentManager,"")
-
         }
 
         playRecord.setOnClickListener {
@@ -54,4 +53,5 @@ class HomeFragment : BaseFragment() {
 
         voiceEffects.adapter = adapter
     }
+
 }
