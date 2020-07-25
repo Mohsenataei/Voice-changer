@@ -3,6 +3,7 @@ package com.example.voiceeffects.ui
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -14,11 +15,13 @@ import com.example.voiceeffects.utils.Constants
 
 class HomeActivity : BaseActivity() {
 
-    private val viewmodel by lazy { ViewModelProviders.of(this, viewModelFactory).get(
-        HomeViewModel::class.java) }
+    private val viewmodel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(
+            HomeViewModel::class.java
+        )
+    }
     private lateinit var navController: NavController
     private var fileAccessGranted = false
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,10 +40,10 @@ class HomeActivity : BaseActivity() {
     private fun requestFilePermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(
-                Constants.readAndWritePermissions,Constants.STORAGE_PERMISSION_REQUEST_CODE
+                Constants.readAndWritePermissions, Constants.STORAGE_PERMISSION_REQUEST_CODE
             )
         } else {
-            fileAccessGranted = true
+
         }
     }
 
