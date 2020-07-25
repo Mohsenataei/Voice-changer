@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.voiceeffects.R
 import com.example.voiceeffects.ui.base.BaseFragment
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 class HomeFragment : BaseFragment() {
     private val viewModel: HomeViewModel by lazy {
         ViewModelProviders.of(this,viewModelFactory).get(HomeViewModel::class.java)
+        ViewModelProvider(this,viewModelFactory).get(HomeViewModel::class.java)
     }
     private lateinit var adapter: ArrayAdapter<String>
 

@@ -2,10 +2,12 @@ package com.example.voiceeffects.ui.home
 
 import android.content.Context
 import android.media.AudioTrack
+import android.media.MediaRecorder
 import android.os.Environment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.voiceeffects.R
+import com.example.voiceeffects.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +18,7 @@ class HomeViewModel @Inject constructor(
     private val context: Context
 ) : ViewModel() {
     val isRecording = MutableLiveData<Boolean>().apply { value = false }
-    val file: File = File(Environment.getExternalStorageDirectory(), "effects1.pcm")
+    val file: File = File(context.getExternalFilesDir(null)?.absolutePath, "effects1.pcm")
     val filters = MutableLiveData<MutableList<String>>().apply {
         value = mutableListOf()
     }
@@ -83,7 +85,9 @@ class HomeViewModel @Inject constructor(
             audioTrack = AudioTrack(3, frequency, 2, 2, bufferSizeInBytes, 1)
             audioTrack.play()
             audioTrack.write(audioData, 0, bufferSizeInBytes)
+
         }
     }
+
 
 }

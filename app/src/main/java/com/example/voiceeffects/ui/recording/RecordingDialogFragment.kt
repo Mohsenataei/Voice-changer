@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.voiceeffects.R
 import com.example.voiceeffects.toast
@@ -23,7 +24,8 @@ class RecordingDialogFragment : BaseDialogFragment(), Animation.AnimationListene
 
 
     private val viewModel: RecordingViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(RecordingViewModel::class.java)
+//        ViewModelProviders.of(this, viewModelFactory).get(RecordingViewModel::class.java)
+        ViewModelProvider(this,viewModelFactory).get(RecordingViewModel::class.java)
     }
 
     private var recording: Boolean = false

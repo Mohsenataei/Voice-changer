@@ -25,7 +25,7 @@ class RecordingViewModel @Inject constructor(
     fun startRecordingVoice() {
         CoroutineScope(Dispatchers.IO).launch {
             val myFile =
-                File(Environment.getExternalStorageDirectory().absolutePath, "effects1.pcm")
+                File(context.getExternalFilesDir(null)?.absolutePath, "effects1.pcm")
             myFile.createNewFile()
             val outPutStream = FileOutputStream(myFile)
             val bufferedOutPutStream = BufferedOutputStream(outPutStream)
