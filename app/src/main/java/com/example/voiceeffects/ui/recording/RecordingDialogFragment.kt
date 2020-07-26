@@ -53,15 +53,13 @@ class RecordingDialogFragment : BaseDialogFragment(), Animation.AnimationListene
     }
 
     private fun initView() {
-        recording = true
-        viewModel.trueRecordFlag()
-        viewModel.startRecordingVoice()
+        viewModel.StartRecorder()
         animRotate = AnimationUtils.loadAnimation(requireContext(), R.anim.zoom_out)
         animRotate.setAnimationListener(this)
         imageView.visibility = View.INVISIBLE
         imageView.startAnimation(animRotate)
         stopRec.setOnClickListener {
-            viewModel.falseRecordFlag()
+            viewModel.stopRecording()
             dismiss()
         }
     }
@@ -77,40 +75,5 @@ class RecordingDialogFragment : BaseDialogFragment(), Animation.AnimationListene
     override fun onAnimationStart(anim: Animation?) {
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-
-    }
-
-    private fun requestReadAndWritePermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(
-                readAndWritePermissions,
-                Constants.STORAGE_PERMISSION_REQUEST_CODE
-            )
-        } else {
-            fileAccessGranted = true
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        fileAccessGranted = grantResults.takeIf { it.isNotEmpty() }
-            ?.map { it == PackageManager.PERMISSION_GRANTED }
-            ?.firstOrNull { it.not() }
-            ?.let { false }
-            ?: true
-    }
-
-    private fun checkStoragePermissions(){
-        if (!requireContext().checkPermissions(readAndWritePermissions)){
-            requestReadAndWritePermissions()
-        }else{
-            Log.i("TAG", "Permissions already granted")
-        }
-    }
 }
 

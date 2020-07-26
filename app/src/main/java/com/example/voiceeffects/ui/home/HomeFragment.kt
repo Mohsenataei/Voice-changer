@@ -44,7 +44,7 @@ class HomeFragment : BaseFragment() {
 
 
     private fun initView() {
-        adapter = ArrayAdapter(requireContext(),android.R.layout.simple_expandable_list_item_1)
+        adapter = ArrayAdapter(requireContext(), android.R.layout.simple_expandable_list_item_1)
         viewModel.filters.observe(viewLifecycleOwner, Observer {
             initAdapter(it)
         })
@@ -86,14 +86,18 @@ class HomeFragment : BaseFragment() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode){
+        when (requestCode) {
             STORAGE_PERMISSION_REQUEST_CODE -> {
-                fileAccessPermission = grantResults.takeIf { it.isNotEmpty() }
-                    ?.map { it == PackageManager.PERMISSION_GRANTED }
-                    ?.firstOrNull { it.not() }
-                    ?.let { true }
-                    ?: false
-                openRecordingDialog()
+//                fileAccessPermission = grantResults.takeIf { it.isNotEmpty() }
+//                    ?.map { it == PackageManager.PERMISSION_GRANTED }
+//                    ?.firstOrNull { it.not() }
+//                    ?.let { true }
+//                    ?: false
+                checkGrantPermissions(grantResults)
+
+                if (fileAccessPermission) openRecordingDialog()
+
+
             }
         }
     }
@@ -103,12 +107,13 @@ class HomeFragment : BaseFragment() {
             .show(childFragmentManager, "Recording dialog fragment")
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    private fun checkGrantPermissions(grantResults: IntArray) {
+        grantResults.forEach {
+            if (it != PackageManager.PERMISSION_GRANTED) {
+                fileAccessPermission = false
+                return
+            }
+        }
+        fileAccessPermission = true
     }
-
-
-
-
-
 }

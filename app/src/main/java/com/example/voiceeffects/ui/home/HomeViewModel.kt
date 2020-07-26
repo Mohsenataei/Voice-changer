@@ -17,7 +17,7 @@ class HomeViewModel @Inject constructor(
     private val context: Context
 ) : ViewModel() {
     val isRecording = MutableLiveData<Boolean>().apply { value = false }
-    val file: File = File(context.getExternalFilesDir(null)?.absolutePath, "effects1.pcm")
+    val file: File = File(context.externalCacheDir!!.absolutePath, "audiorecordtest.3gp")
     val filters = MutableLiveData<MutableList<String>>().apply {
         value = mutableListOf()
     }

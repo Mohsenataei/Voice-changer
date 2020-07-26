@@ -52,6 +52,7 @@ class HomeActivity : BaseActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         fileAccessGranted = grantResults.takeIf { it.isNotEmpty() }
             ?.map { it == PackageManager.PERMISSION_GRANTED }
             ?.firstOrNull { it.not() }
