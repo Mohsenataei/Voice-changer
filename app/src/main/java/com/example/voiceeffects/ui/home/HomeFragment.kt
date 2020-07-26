@@ -1,6 +1,5 @@
 package com.example.voiceeffects.ui.home
 
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,20 +8,18 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.example.voiceeffects.R
-import com.example.voiceeffects.extensions.checkPermissions
+import com.example.voiceeffects.event.RequestPermissionEvent
 import com.example.voiceeffects.extensions.checkSelfPermissions
 import com.example.voiceeffects.extensions.toast
 import com.example.voiceeffects.ui.base.BaseFragment
 import com.example.voiceeffects.ui.recording.RecordingDialogFragment
 import com.example.voiceeffects.utils.Constants.STORAGE_PERMISSION_REQUEST_CODE
-import com.example.voiceeffects.utils.Constants.readAndWritePermissions
+import com.example.voiceeffects.utils.Constants.READ_AND_WRITE_PERMISSIONS
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : BaseFragment() {
     private val viewModel: HomeViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
     }
     private lateinit var adapter: ArrayAdapter<String>
@@ -48,34 +45,41 @@ class HomeFragment : BaseFragment() {
         viewModel.filters.observe(viewLifecycleOwner, Observer {
             initAdapter(it)
         })
+        viewModel.isPermissionGranted.observe(viewLifecycleOwner, Observer { event ->
+            event.validContent?.let {
+                handlePermissions(it)
+            }
+        })
         startRecord.setOnClickListener {
-//            requestPermissions(readAndWritePermissions, STORAGE_PERMISSION_REQUEST_CODE)
-            if (requireContext().checkSelfPermissions(readAndWritePermissions))
+            if (requireContext().checkSelfPermissions(READ_AND_WRITE_PERMISSIONS))
                 openRecordingDialog()
             else {
-                requireContext().toast("please give us storage access.")
                 checkPermissions()
             }
         }
 
         playRecord.setOnClickListener {
             viewModel.playRecord(voiceEffects.selectedItem.toString())
+//            viewModel.play()
         }
+    }
+
+    private fun handlePermissions(it: RequestPermissionEvent) {
+
     }
 
     private fun initAdapter(items: List<String>) {
         adapter.addAll(items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
         voiceEffects.adapter = adapter
     }
 
     private fun checkPermissions() {
         if (!fileAccessPermission) {
-            if (requireContext().checkSelfPermissions(readAndWritePermissions)) {
+            if (requireContext().checkSelfPermissions(READ_AND_WRITE_PERMISSIONS)) {
                 fileAccessPermission = true
             } else {
-                requestPermissions(readAndWritePermissions, STORAGE_PERMISSION_REQUEST_CODE)
+                requestPermissions(READ_AND_WRITE_PERMISSIONS, STORAGE_PERMISSION_REQUEST_CODE)
             }
         }
     }

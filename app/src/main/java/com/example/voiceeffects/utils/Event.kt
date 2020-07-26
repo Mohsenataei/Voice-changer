@@ -8,14 +8,25 @@ open class Event<out T>(private val content: T) {
     /**
      * Returns the content and prevents its use again.
      */
-    fun getContentIfNotHandledOrReturnNull(): T? {
-        return if (hasBeenHandled) {
-            null
-        } else {
-            hasBeenHandled = true
-            content
+//    fun getContentIfNotHandledOrReturnNull(): T? {
+//        return if (hasBeenHandled) {
+//            null
+//        } else {
+//            hasBeenHandled = true
+//            content
+//        }
+//    }
+
+
+    val validContent: T?
+        get() {
+            return if (hasBeenHandled) {
+                null
+            } else {
+                hasBeenHandled = true
+                content
+            }
         }
-    }
 
     /**
      * Returns the content, even if it's already been handled.

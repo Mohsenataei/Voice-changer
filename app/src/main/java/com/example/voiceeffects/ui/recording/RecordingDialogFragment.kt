@@ -1,11 +1,7 @@
 package com.example.voiceeffects.ui.recording
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +9,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.lifecycle.ViewModelProvider
 import com.example.voiceeffects.R
-import com.example.voiceeffects.extensions.checkPermissions
-import com.example.voiceeffects.extensions.toast
 import com.example.voiceeffects.ui.base.BaseDialogFragment
-import com.example.voiceeffects.utils.Constants
-import com.example.voiceeffects.utils.Constants.readAndWritePermissions
 import kotlinx.android.synthetic.main.recording_dialog_fragment.*
 
 private const val TAG = "RecordingDialogFragment"
@@ -32,8 +24,6 @@ class RecordingDialogFragment : BaseDialogFragment(), Animation.AnimationListene
     private val viewModel: RecordingViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(RecordingViewModel::class.java)
     }
-
-    private var recording: Boolean = false
 
     companion object {
         fun newInstance() = RecordingDialogFragment()

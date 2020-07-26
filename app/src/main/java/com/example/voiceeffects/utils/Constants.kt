@@ -8,7 +8,7 @@ object Constants {
     const val RECORD_AUDIO = android.Manifest.permission.RECORD_AUDIO
     const val MODIFY_AUDIO_SETTINGS = android.Manifest.permission.MODIFY_AUDIO_SETTINGS
 
-    val readAndWritePermissions = arrayOf(
+    val READ_AND_WRITE_PERMISSIONS = arrayOf(
         WRITE_EXTERNAL_STORAGE,
         READ_EXTERNAL_STORAGE,
         RECORD_AUDIO,

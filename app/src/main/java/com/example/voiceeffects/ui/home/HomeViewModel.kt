@@ -2,11 +2,15 @@ package com.example.voiceeffects.ui.home
 
 import android.content.Context
 import android.media.AudioTrack
-import android.media.MediaRecorder
-import android.os.Environment
+import android.media.MediaPlayer
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.voiceeffects.R
+import com.example.voiceeffects.event.RequestPermissionEvent
+import com.example.voiceeffects.extensions.checkSelfPermissions
+import com.example.voiceeffects.utils.Constants
+import com.example.voiceeffects.utils.Event
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,6 +20,10 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val context: Context
 ) : ViewModel() {
+
+    lateinit var player: MediaPlayer
+    private var recordFileName: String =
+        "${context.externalCacheDir!!.absolutePath}/audiorecordtest.3gp"
     val isRecording = MutableLiveData<Boolean>().apply { value = false }
     val file: File = File(context.externalCacheDir!!.absolutePath, "audiorecordtest.3gp")
     val filters = MutableLiveData<MutableList<String>>().apply {
@@ -23,9 +31,12 @@ class HomeViewModel @Inject constructor(
     }
     private var audioTrack = AudioTrack(3, 11025, 2, 2, 2048, 1)
 
+    val isPermissionGranted = MutableLiveData<Event<RequestPermissionEvent>>()
+
 
     init {
         initFilterArray()
+        checkPermissions()
     }
 
     fun playRecord(filter: String) {
@@ -46,11 +57,6 @@ class HomeViewModel @Inject constructor(
             add(getString(R.string.elephant))
         }
     }
-
-    fun stopPlaying() {
-        audioTrack.stop()
-    }
-
     private fun getString(resId: Int) = context.getString(resId)
 
     private fun playRecordedAudio(filter: String){
@@ -87,6 +93,27 @@ class HomeViewModel @Inject constructor(
 
         }
     }
+
+
+    fun play(){
+        player = MediaPlayer().apply {
+            try {
+                setDataSource(recordFileName)
+                prepare()
+                start()
+            }catch (e: IOException){
+                e.printStackTrace()
+                Log.e("mediaPlayer","prepate failed. ${e.message}")
+            }
+        }
+    }
+
+    private fun checkPermissions(){
+        isPermissionGranted.value = Event(RequestPermissionEvent(context.checkSelfPermissions(Constants.READ_AND_WRITE_PERMISSIONS)))
+    }
+
+
+
 
 
 }
