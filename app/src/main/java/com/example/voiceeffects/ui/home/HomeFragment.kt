@@ -44,13 +44,14 @@ class HomeFragment : BaseFragment() {
 
 
     private fun initView() {
+        adapter = ArrayAdapter(requireContext(),android.R.layout.simple_expandable_list_item_1)
         viewModel.filters.observe(viewLifecycleOwner, Observer {
             initAdapter(it)
         })
         startRecord.setOnClickListener {
 //            requestPermissions(readAndWritePermissions, STORAGE_PERMISSION_REQUEST_CODE)
             if (requireContext().checkSelfPermissions(readAndWritePermissions))
-                RecordingDialogFragment.newInstance().show(childFragmentManager, "Recording dialog fragment")
+                openRecordingDialog()
             else {
                 requireContext().toast("please give us storage access.")
                 checkPermissions()
@@ -63,8 +64,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initAdapter(items: List<String>) {
-        adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_expandable_list_item_1, items)
+        adapter.addAll(items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         voiceEffects.adapter = adapter
@@ -93,14 +93,21 @@ class HomeFragment : BaseFragment() {
                     ?.firstOrNull { it.not() }
                     ?.let { true }
                     ?: false
-                RecordingDialogFragment.newInstance().show(childFragmentManager, "Recording dialog fragment")
+                openRecordingDialog()
             }
         }
+    }
+
+    private fun openRecordingDialog() {
+        RecordingDialogFragment.newInstance()
+            .show(childFragmentManager, "Recording dialog fragment")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
     }
+
+
 
 
 
