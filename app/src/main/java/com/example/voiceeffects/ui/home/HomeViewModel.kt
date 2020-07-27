@@ -3,11 +3,11 @@ package com.example.voiceeffects.ui.home
 import android.content.Context
 import android.media.AudioTrack
 import android.media.MediaPlayer
+import android.media.audiofx.PresetReverb
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.voiceeffects.R
-import com.example.voiceeffects.event.RequestPermissionEvent
 import com.example.voiceeffects.extensions.checkSelfPermissions
 import com.example.voiceeffects.utils.Constants
 import com.example.voiceeffects.utils.Event
@@ -96,9 +96,14 @@ class HomeViewModel @Inject constructor(
 
 
     fun play() {
+        val reverb =  PresetReverb(1,0)
         player = MediaPlayer().apply {
             try {
                 setDataSource(recordFileName)
+                attachAuxEffect(reverb.id)
+                reverb.preset = PresetReverb.PRESET_LARGEHALL;
+                reverb.enabled = true
+                setAuxEffectSendLevel(1.0f)
                 prepare()
                 start()
             } catch (e: IOException) {
@@ -111,6 +116,15 @@ class HomeViewModel @Inject constructor(
     fun checkPermissions() {
         isPermissionGranted.value =
             Event(context.checkSelfPermissions(Constants.READ_AND_WRITE_PERMISSIONS))
+    }
+
+
+    private fun createEffects(){
+        val reverb =  PresetReverb(1,0)
+        player.attachAuxEffect(reverb.id)
+        reverb.preset = PresetReverb.PRESET_LARGEHALL;
+        reverb.enabled = true
+        player.setAuxEffectSendLevel(1.0f)
     }
 
 

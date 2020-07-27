@@ -29,11 +29,10 @@ class RecordingViewModel @Inject constructor(
             stop()
             release()
         }
-
         recorder = null
     }
 
-    fun StartRecorder() {
+    fun startRecorder() {
         recorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)

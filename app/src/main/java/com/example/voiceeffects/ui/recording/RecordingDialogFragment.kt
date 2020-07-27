@@ -9,18 +9,20 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.lifecycle.ViewModelProvider
 import com.example.voiceeffects.R
+import com.example.voiceeffects.databinding.RecordingDialogFragmentBinding
 import com.example.voiceeffects.ui.base.BaseDialogFragment
 import kotlinx.android.synthetic.main.recording_dialog_fragment.*
 
 private const val TAG = "RecordingDialogFragment"
+
 @SuppressLint("LogNotTimber")
 class RecordingDialogFragment : BaseDialogFragment(), Animation.AnimationListener {
     private lateinit var animRotate: Animation
-    private var fileAccessGranted = false
 
+    // view binding
 
-
-
+    private var _binding: RecordingDialogFragmentBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: RecordingViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(RecordingViewModel::class.java)
     }
@@ -34,7 +36,8 @@ class RecordingDialogFragment : BaseDialogFragment(), Animation.AnimationListene
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.recording_dialog_fragment, container, false)
+        _binding = RecordingDialogFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,12 +46,12 @@ class RecordingDialogFragment : BaseDialogFragment(), Animation.AnimationListene
     }
 
     private fun initView() {
-        viewModel.StartRecorder()
+        viewModel.startRecorder()
         animRotate = AnimationUtils.loadAnimation(requireContext(), R.anim.zoom_out)
         animRotate.setAnimationListener(this)
         imageView.visibility = View.INVISIBLE
         imageView.startAnimation(animRotate)
-        stopRec.setOnClickListener {
+        binding.stopRec.setOnClickListener {
             viewModel.stopRecording()
             dismiss()
         }

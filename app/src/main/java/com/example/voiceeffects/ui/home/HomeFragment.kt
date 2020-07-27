@@ -1,5 +1,6 @@
 package com.example.voiceeffects.ui.home
 
+import android.app.Fragment
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,9 +10,7 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.voiceeffects.R
-import com.example.voiceeffects.event.RequestPermissionEvent
-import com.example.voiceeffects.extensions.checkSelfPermissions
-import com.example.voiceeffects.extensions.toast
+import com.example.voiceeffects.databinding.FragmentHomeBinding
 import com.example.voiceeffects.ui.base.BaseFragment
 import com.example.voiceeffects.ui.recording.RecordingDialogFragment
 import com.example.voiceeffects.utils.Constants.STORAGE_PERMISSION_REQUEST_CODE
@@ -24,6 +23,10 @@ class HomeFragment : BaseFragment() {
     }
     private lateinit var adapter: ArrayAdapter<String>
 
+    //view binding
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
     private var fileAccessPermission = false
 
     override fun onCreateView(
@@ -31,8 +34,15 @@ class HomeFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,13 +64,13 @@ class HomeFragment : BaseFragment() {
     private fun initView() {
         adapter = ArrayAdapter(requireContext(), android.R.layout.simple_expandable_list_item_1)
 
-        startRecord.setOnClickListener {
+        binding.startRecord.setOnClickListener {
             viewModel.checkPermissions()
         }
 
-        playRecord.setOnClickListener {
-            viewModel.playRecord(voiceEffects.selectedItem.toString())
-//            viewModel.play()
+        binding.playRecord.setOnClickListener {
+//            viewModel.playRecord(voiceEffects.selectedItem.toString())
+            viewModel.play()
         }
     }
 
