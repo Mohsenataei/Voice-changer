@@ -1,6 +1,5 @@
 package com.example.voiceeffects.ui.base
 
-import androidx.appcompat.app.AppCompatActivity
 import com.example.voiceeffects.di.DaggerViewModelFactory
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

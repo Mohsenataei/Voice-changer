@@ -1,6 +1,5 @@
 package com.example.voiceeffects.ui.home
 
-import android.app.Fragment
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,13 +8,11 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.voiceeffects.R
 import com.example.voiceeffects.databinding.FragmentHomeBinding
 import com.example.voiceeffects.ui.base.BaseFragment
 import com.example.voiceeffects.ui.recording.RecordingDialogFragment
 import com.example.voiceeffects.utils.Constants.STORAGE_PERMISSION_REQUEST_CODE
 import com.example.voiceeffects.utils.Constants.READ_AND_WRITE_PERMISSIONS
-import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : BaseFragment() {
     private val viewModel: HomeViewModel by lazy {
@@ -85,7 +82,7 @@ class HomeFragment : BaseFragment() {
     private fun initAdapter(items: List<String>) {
         adapter.addAll(items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        voiceEffects.adapter = adapter
+        binding.voiceEffects.adapter = adapter
     }
 
     override fun onRequestPermissionsResult(
