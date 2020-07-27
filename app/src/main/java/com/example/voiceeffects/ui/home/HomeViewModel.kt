@@ -31,12 +31,11 @@ class HomeViewModel @Inject constructor(
     }
     private var audioTrack = AudioTrack(3, 11025, 2, 2, 2048, 1)
 
-    val isPermissionGranted = MutableLiveData<Event<RequestPermissionEvent>>()
+    val isPermissionGranted = MutableLiveData<Event<Boolean>>()
 
 
     init {
         initFilterArray()
-        checkPermissions()
     }
 
     fun playRecord(filter: String) {
@@ -57,9 +56,10 @@ class HomeViewModel @Inject constructor(
             add(getString(R.string.elephant))
         }
     }
+
     private fun getString(resId: Int) = context.getString(resId)
 
-    private fun playRecordedAudio(filter: String){
+    private fun playRecordedAudio(filter: String) {
         if (file.exists()) {
             audioTrack.stop()
             var frequency = 0
@@ -95,25 +95,23 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    fun play(){
+    fun play() {
         player = MediaPlayer().apply {
             try {
                 setDataSource(recordFileName)
                 prepare()
                 start()
-            }catch (e: IOException){
+            } catch (e: IOException) {
                 e.printStackTrace()
-                Log.e("mediaPlayer","prepate failed. ${e.message}")
+                Log.e("mediaPlayer", "prepate failed. ${e.message}")
             }
         }
     }
 
-    private fun checkPermissions(){
-        isPermissionGranted.value = Event(RequestPermissionEvent(context.checkSelfPermissions(Constants.READ_AND_WRITE_PERMISSIONS)))
+    fun checkPermissions() {
+        isPermissionGranted.value =
+            Event(context.checkSelfPermissions(Constants.READ_AND_WRITE_PERMISSIONS))
     }
-
-
-
 
 
 }

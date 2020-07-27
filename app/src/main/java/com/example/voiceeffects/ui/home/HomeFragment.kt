@@ -37,25 +37,25 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initObservers()
+    }
+
+    private fun initObservers() {
+        viewModel.filters.observe(viewLifecycleOwner, Observer {
+            initAdapter(it)
+        })
+
+        viewModel.isPermissionGranted.observe(viewLifecycleOwner, Observer { event ->
+            handlePermissions(event.validContent!!)
+        })
     }
 
 
     private fun initView() {
         adapter = ArrayAdapter(requireContext(), android.R.layout.simple_expandable_list_item_1)
-        viewModel.filters.observe(viewLifecycleOwner, Observer {
-            initAdapter(it)
-        })
-        viewModel.isPermissionGranted.observe(viewLifecycleOwner, Observer { event ->
-            event.validContent?.let {
-                handlePermissions(it)
-            }
-        })
+
         startRecord.setOnClickListener {
-            if (requireContext().checkSelfPermissions(READ_AND_WRITE_PERMISSIONS))
-                openRecordingDialog()
-            else {
-                checkPermissions()
-            }
+            viewModel.checkPermissions()
         }
 
         playRecord.setOnClickListener {
@@ -64,24 +64,18 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun handlePermissions(it: RequestPermissionEvent) {
-
+    private fun handlePermissions(event: Boolean) {
+        if (event) {
+            openRecordingDialog()
+        } else {
+            requestPermissions(READ_AND_WRITE_PERMISSIONS, STORAGE_PERMISSION_REQUEST_CODE)
+        }
     }
 
     private fun initAdapter(items: List<String>) {
         adapter.addAll(items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         voiceEffects.adapter = adapter
-    }
-
-    private fun checkPermissions() {
-        if (!fileAccessPermission) {
-            if (requireContext().checkSelfPermissions(READ_AND_WRITE_PERMISSIONS)) {
-                fileAccessPermission = true
-            } else {
-                requestPermissions(READ_AND_WRITE_PERMISSIONS, STORAGE_PERMISSION_REQUEST_CODE)
-            }
-        }
     }
 
     override fun onRequestPermissionsResult(
@@ -98,10 +92,7 @@ class HomeFragment : BaseFragment() {
 //                    ?.let { true }
 //                    ?: false
                 checkGrantPermissions(grantResults)
-
                 if (fileAccessPermission) openRecordingDialog()
-
-
             }
         }
     }
@@ -120,4 +111,6 @@ class HomeFragment : BaseFragment() {
         }
         fileAccessPermission = true
     }
+
+
 }
