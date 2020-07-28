@@ -17,10 +17,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
         externalNativeBuild {
             cmake {
-
+                cppFlags "-std=c++11"
             }
         }
 
@@ -50,7 +49,8 @@ android {
 
     externalNativeBuild {
         cmake {
-            path "CMakeLists.txt"
+            path "src/main/cpp/CMakeLists.txt"
+            version "3.10.2"
         }
     }
 }

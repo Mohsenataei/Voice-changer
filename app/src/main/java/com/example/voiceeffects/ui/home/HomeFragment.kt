@@ -93,11 +93,6 @@ class HomeFragment : BaseFragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             STORAGE_PERMISSION_REQUEST_CODE -> {
-//                fileAccessPermission = grantResults.takeIf { it.isNotEmpty() }
-//                    ?.map { it == PackageManager.PERMISSION_GRANTED }
-//                    ?.firstOrNull { it.not() }
-//                    ?.let { true }
-//                    ?: false
                 checkGrantPermissions(grantResults)
                 if (fileAccessPermission) openRecordingDialog()
             }
