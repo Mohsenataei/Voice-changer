@@ -12,7 +12,7 @@ class HomeActivity : BaseActivity() {
 
     companion object {
         init {
-            System.loadLibrary("native-lib")
+            System.loadLibrary("AudioManagerJNI")
         }
     }
 
@@ -23,15 +23,10 @@ class HomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initView()
-        val t = testFun()
-        toast("this is first method calling from jni $t")
     }
 
     private fun initView() {
         navController = findNavController(R.id.nav_host_fragment)
     }
 
-    external fun stringFromJNI():String
-
-    external fun testFun():String
 }
